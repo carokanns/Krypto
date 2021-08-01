@@ -1,6 +1,7 @@
 {
   "files.exclude": {
+    "LICENSE": true,
     ".gitignore": true,
-    "catboost_info": true
+    "workspace.code-workspace": true
   }
 }
