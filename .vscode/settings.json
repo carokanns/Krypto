@@ -1,0 +1,6 @@
+{
+  "files.exclude": {
+    ".gitignore": true,
+    "catboost_info": true
+  }
+}
