@@ -45,12 +45,7 @@ if typ==2:
     with load:
         ETH = web.DataReader(valuta,'yahoo') # Etherium
 
-        if st.button('reload '+kryptotext):
-            ETH = web.DataReader(valuta,'yahoo') # Etherium]
-            st.write('de 5 sista dagarna exrtrakt',ETH.iloc[-5:][['Adj Close', 'Volume',]])
-        else:
-            # st.write(kryptotext+' data hämtat')
-            pass
+        # st.write('de 5 sista dagarna exrtrakt',ETH.iloc[-5:][['Adj Close', 'Volume',]])
             
     # st.write('lastETH',ETH.iloc[-1:].index[0])
     tidsram='15 dagar'
@@ -171,41 +166,41 @@ if typ==2:
         if bollinger=='Ja':
             data=add_bollinger(data)
             
-        if st.button('kolla rådata'):
+        if st.button(kryptotext+' data'):
             st.write('tidsram', tidsram)
             df=data.iloc[-tidsram:]
             st.write(df)
         else:
             pass    
         
-        if st.button('graf'):
-            # st.write('tidsram =',tidsram,'dagar för grafen')
-            lastdate=ETH.iloc[-1:].index
-            st.write('Senast käda datun', str(lastdate[0])[:10]+'.  (Efter den röda prickade linjen är 5 dagars prognos)')
-            
-            ### plot Adj Close ###
-            fig = plt.figure(figsize=(16,6))
-            ax = fig.add_subplot(1,1,1)
-            df=data.iloc[-tidsram:]
-            ax.set_title(kryptotext+' "Adjusted Close"')
-            
-            if bollinger=='Nej':
-                ax.plot(
-                    df.index,
-                    df["Adj Close"],
-                )   
-                maxa = df['Adj Close'].max()
-                mina = df['Adj Close'].min()
-            else:
-                maxa = df['Upper'].max()
-                mina = df['Lower'].min()
-            
-                ax.plot(
-                    df.index,
-                    df[["Adj Close",'SMA','Upper','Lower']],
-                )    
-                ax.fill_between(df.index,df.Upper,df.Lower,color='grey',alpha=0.3)
-                ax.legend(['Pris','Simple Moving Avg','Övre','Undre'])
+        
+        # st.write('tidsram =',tidsram,'dagar för grafen')
+        lastdate=ETH.iloc[-1:].index
+        st.write('Senast käda datun', str(lastdate[0])[:10]+'.  (Efter den röda prickade linjen är 5 dagars prognos)')
+        
+        ### plot Adj Close ###
+        fig = plt.figure(figsize=(16,6))
+        ax = fig.add_subplot(1,1,1)
+        df=data.iloc[-tidsram:]
+        ax.set_title(kryptotext+' "Adjusted Close"')
+        
+        if bollinger=='Nej':
+            ax.plot(
+                df.index,
+                df["Adj Close"],
+            )   
+            maxa = df['Adj Close'].max()
+            mina = df['Adj Close'].min()
+        else:
+            maxa = df['Upper'].max()
+            mina = df['Lower'].min()
+        
+            ax.plot(
+                df.index,
+                df[["Adj Close",'SMA','Upper','Lower']],
+            )    
+            ax.fill_between(df.index,df.Upper,df.Lower,color='grey',alpha=0.3)
+            ax.legend(['Pris','Simple Moving Avg','Övre','Undre'])
 
             # ax.set_xlabel("Datum")
             
@@ -240,10 +235,10 @@ else:
         cumret = (1+rel).cumprod() - 1
         cumret=cumret.fillna(0)
         return cumret
-
-    df = relret(web.DataReader(tickers,'yahoo',start)['Adj Close']) # alla mina krypto
-    omx = relret(web.DataReader(['^OMX'],'yahoo',start)['Adj Close']) # Stockholm 30 index
-    df=pd.merge(df,omx,left_index=True,right_index=True,how='outer')
+    with st.spinner('ta det lugnt'):
+        df = relret(web.DataReader(tickers,'yahoo',start)['Adj Close']) # alla mina krypto
+        omx = relret(web.DataReader(['^OMX'],'yahoo',start)['Adj Close']) # Stockholm 30 index
+        df=pd.merge(df,omx,left_index=True,right_index=True,how='outer')
     
     oldestdate = str(df.index[0])[:10]
     
@@ -264,8 +259,10 @@ else:
     ax.set_ylabel("relativ utveckling",fontsize = 32.0)
     ax.tick_params(axis='x', rotation=66, labelsize=24.0)
     st.write(fig)
-    st.write("""Grafen visar utveckling av mina kryptovalutor och OMX30 relativt varandra   
+    
+    with st.beta_expander('Förklaring'):
+        st.write("""Grafen visar utveckling av mina kryptovalutor och OMX30 relativt varandra   
              OMX30 är ett snitt av Stockholmsbörsens 30 mest omsatta aktier.   
-             Allt startar från min inköpsdatum av krypto""",oldestdate)
-    'Att OMX30-linjen har tomrum beror på helgdagar'
-            
+             Allt startar från min inköpsdatum av krypto""",oldestdate) 
+          
+        "Att OMX30-linjen har tomrum beror på helgdagar då börsen är stängd"
