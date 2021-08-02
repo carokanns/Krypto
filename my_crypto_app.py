@@ -3,7 +3,7 @@ import pandas as pd
 # from datetime import datetime as dt
 from datetime import timedelta
 import pandas_datareader.data as web
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
 import streamlit as st
 # from IPython.display import clear_output 
@@ -27,7 +27,7 @@ else:
     
 if typ==2:        
     kryptotext = st.sidebar.selectbox('vilken valuta',('ETH (Ethereum)','BTC (Bitcoin)',
-                                                    'BCH (Bitcoin Cach','ZRX (0x)','XRP Ledger'),index=0)
+                                                    'BCH (Bitcoin Cach)','ZRX (0x)','XRP Ledger'),index=0)
     kryptotext = kryptotext[:3]
     if kryptotext=='ETH':
         valuta = 'ETH-USD'
@@ -175,7 +175,7 @@ if typ==2:
         
         # st.write('tidsram =',tidsram,'dagar för grafen')
         lastdate=ETH.iloc[-1:].index
-        st.write('Senast käda datun', str(lastdate[0])[:10]+'.  (Efter den röda prickade linjen är 5 dagars prognos)')
+        st.write('Senast käda datun', str(lastdate[0])[:10]+'.  (Efter den röda prickade linjen följer en 5 dagars prognos)')
         
         ### plot Adj Close ###
         fig = plt.figure(figsize=(16,6))
@@ -260,8 +260,7 @@ else:
     st.write(fig)
     
     with st.beta_expander('Förklaring'):
-        st.write("""Grafen visar utveckling av mina kryptovalutor och OMX30 relativt varandra   
+        st.info("""Grafen visar utveckling av mina kryptovalutor och OMX30 relativt varandra   
              OMX30 är ett snitt av Stockholmsbörsens 30 mest omsatta aktier.   
-             Allt startar från min inköpsdatum av krypto""",oldestdate) 
-          
-        "Att OMX30-linjen har tomrum beror på helgdagar då börsen är stängd"
+             Allt startar från min inköpsdatum av kryptovalutor """ + oldestdate +      
+             """  \nAtt OMX30-linjen har tomrum beror på helgdagar då börsen är stängd""")
