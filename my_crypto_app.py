@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from datetime import datetime as dt
+# from datetime import datetime as dt
 from datetime import timedelta
 import pandas_datareader.data as web
 import matplotlib.pyplot as plt
@@ -8,10 +8,9 @@ import matplotlib.pyplot as plt
 import streamlit as st
 # from IPython.display import clear_output 
 from catboost import CatBoostRegressor,Pool,utils
-import time
+# import time
 plt.style.use('fivethirtyeight')
 
-    
 def proc_change(df, ny, gammal, dagar):
     df[ny+'_'+str(dagar)] = df[gammal].pct_change(dagar)
 
