@@ -2,7 +2,9 @@ import numpy as np
 import pandas as pd
 # from datetime import datetime as dt
 from datetime import timedelta
-import pandas_datareader.data as web
+# import pandas_datareader.data as web
+import yfinance as yf
+
 from matplotlib import pyplot as plt
 
 import streamlit as st
@@ -43,7 +45,8 @@ if typ==2:
         
     #%%
     with load:
-        ETH = web.DataReader(valuta,'yahoo') # Etherium
+        # ETH = web.DataReader(valuta,'yahoo') # Etherium
+        ETH = yf.download(valuta,progress=False)
 
         # st.write('de 5 sista dagarna exrtrakt',ETH.iloc[-5:][['Adj Close', 'Volume',]])
             
@@ -199,7 +202,7 @@ if typ==2:
                 df[["Adj Close",'SMA','Upper','Lower']],
             )    
             ax.fill_between(df.index,df.Upper,df.Lower,color='grey',alpha=0.3)
-            ax.legend(['Pris','Simple Moving Avg','Övre','Undre'])
+            ax.legend(['Pris (Adj Close)','Simple Moving Avg','Övre','Undre'])
 
             # ax.set_xlabel("Datum")
             
@@ -235,8 +238,11 @@ else:
         cumret=cumret.fillna(0)
         return cumret
     with st.spinner('ta det lugnt'):
-        df = relret(web.DataReader(tickers,'yahoo',start)['Adj Close']) # alla mina krypto
-        omx = relret(web.DataReader(['^OMX'],'yahoo',start)['Adj Close']) # Stockholm 30 index
+        # df = relret(web.DataReader(tickers,'yahoo',start)['Adj Close']) # alla mina krypto
+        df = relret(yf.download(tickers,start=start,progress=False)['Adj Close'])
+        # omx = relret(web.DataReader(['^OMX'],'yahoo',start)['Adj Close']) # Stockholm 30 index
+        omx = relret(yf.download(['^OMX'],start=start,progress=False)['Adj Close'])
+        
         df=pd.merge(df,omx,left_index=True,right_index=True,how='outer')
     
     oldestdate = str(df.index[0])[:10]
