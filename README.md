@@ -1,9 +1,11 @@
 # Krypto
-A streamlit app that:  
+This app is made by mainly using Python, yfinance and streamlit.
+The app has two different main functions:
     - make a 5 days prediction for each of my own crypto currency  
-    - compares my croptu currencies with OMX (Stockholm stock market)  
-This repo is used for development and to deploy at share.streamlit  
-[The jp-krypto repository](https://github.com/carokanns/jp-krypto) is a copy of this repo and used to deploy at Heroku.  
+    - compares my own crypto currencies with OMX (Stockholm stock market) 
+    
+This repo is used for development and to deploy the app at share.streamlit  
+[The jp-krypto repository](https://github.com/carokanns/jp-krypto) is a copy of this repo and used to deploy the app at Heroku.  
 
 - Open in [Heroku](http://jp-krypto.herokuapp.com/)  
 
