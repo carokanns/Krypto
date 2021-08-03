@@ -168,6 +168,8 @@ if typ==2:
         
         if bollinger=='Ja':
             data=add_bollinger(data)
+        else:
+            pass
             
         if st.button(kryptotext+' data'):
             st.write('tidsram', tidsram)
@@ -193,6 +195,14 @@ if typ==2:
             )   
             maxa = df['Adj Close'].max()
             mina = df['Adj Close'].min()
+            
+            ax.plot(
+                df.index,
+                df[["Adj Close"]],
+            )    
+            
+            ax.legend()
+
         else:
             maxa = df['Upper'].max()
             mina = df['Lower'].min()
@@ -205,30 +215,29 @@ if typ==2:
             ax.legend(['Pris (Adj Close)','Simple Moving Avg','Övre','Undre'])
 
             # ax.set_xlabel("Datum")
+        ax.set_ylabel("$USD")
+        ax.tick_params(axis='x', rotation=66)
             
-            ax.set_ylabel("$USD")
-            ax.tick_params(axis='x', rotation=66)
+        ax.vlines(lastdate,mina,maxa,colors='r', linestyles='dotted')
+        st.write(fig)
             
-            ax.vlines(lastdate,mina,maxa,colors='r', linestyles='dotted')
-            st.write(fig)
-            
-            fig2 = plt.figure(figsize=(16,6))
-            
-            ax2 = fig2.add_subplot(1,1,1)
+        fig2 = plt.figure(figsize=(16,6))
+        
+        ax2 = fig2.add_subplot(1,1,1)
 
-            ax2.set_title(kryptotext+' Volymer')
-            
-            ax2.set_ylabel("Miljoner")
-            ax2.tick_params(axis='x',rotation=66)
-            ax2.plot(
-                df.index,
-                df['Volume']/1000000,
-            )
-            maxv = df['Volume'].max()/1000000
-            minv = df['Volume'].min()/1000000
-            ax2.vlines(lastdate,minv,maxv,colors='r', linestyles='dotted')
-            
-            st.write(fig2)
+        ax2.set_title(kryptotext+' Volymer')
+        
+        ax2.set_ylabel("Miljoner")
+        ax2.tick_params(axis='x',rotation=66)
+        ax2.plot(
+            df.index,
+            df['Volume']/1000000,
+        )
+        maxv = df['Volume'].max()/1000000
+        minv = df['Volume'].min()/1000000
+        ax2.vlines(lastdate,minv,maxv,colors='r', linestyles='dotted')
+        
+        st.write(fig2)
 else:
     tickers = ['BTC-USD','BCH-USD','ETH-USD','XRP-USD','ZRX-USD']
     start='2021-04-13'
@@ -237,6 +246,7 @@ else:
         cumret = (1+rel).cumprod() - 1
         cumret=cumret.fillna(0)
         return cumret
+    
     with st.spinner('ta det lugnt'):
         # df = relret(web.DataReader(tickers,'yahoo',start)['Adj Close']) # alla mina krypto
         df = relret(yf.download(tickers,start=start,progress=False)['Adj Close'])
@@ -257,7 +267,7 @@ else:
         df
     )   
     
-    df.rename(columns = {'BTC-USD':'Bitcoin','BCH-USD':'Bitcoin Cash','ETH-USD':'Ethereum','XRP-USD':'Ripple (XRP)','ZRX-USD':'0x (ZRX)','^OMX':'OMX30'},inplace=True)
+    df.rename(columns = {'BTC-USD':'Bitcoin','BCH-USD':'Bitcoin Cash','ETH-USD':'Ethereum','XRP-USD':'Ripple (XRP)','ZRX-USD':'0x (ZRX)','Adj Close':'OMX30'},inplace=True)
     
     ax.legend(df.columns,handletextpad=1, fontsize = 20.0,loc='upper right')
     
