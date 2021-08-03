@@ -36,9 +36,10 @@ if typ==2:
     elif kryptotext=='BCH':
         valuta = 'BCH-USD'   
     elif kryptotext=='ZRX':
-        kryptvaluta = 'ZRX-USD'   
+        valuta = 'ZRX-USD'   
     elif kryptotext=='XRP':
-        valuta = 'XRP-USD'   
+        valuta = 'XRP-USD'  
+        
         
     #%%
     with load:
@@ -171,7 +172,6 @@ if typ==2:
             st.write(df)
         else:
             pass    
-        
         
         # st.write('tidsram =',tidsram,'dagar för grafen')
         lastdate=ETH.iloc[-1:].index
