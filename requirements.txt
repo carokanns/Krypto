@@ -1,6 +1,7 @@
 numpy==1.19.2 
 pandas==1.1.3 
 pandas-datareader==0.9.0 
-matplotlib==3.3.2 
+matplotlib
 streamlit==0.81.1 
 catboost==0.25.1  
+datetime
