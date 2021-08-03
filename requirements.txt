@@ -1,15 +1,7 @@
 numpy==1.19.2 
 pandas==1.1.3 
 pandas-datareader==0.9.0 
-<<<<<<< HEAD
 matplotlib
 streamlit==0.81.1 
 catboost==0.25.1
 yfinance==0.1.63  
-=======
-yfinance==0.1.63  
-matplotlib
-streamlit==0.81.1 
-catboost==0.25.1  
-datetime
->>>>>>> 82c7f0e8158f0b628f5efe5afde06e6ad05ee8f7
