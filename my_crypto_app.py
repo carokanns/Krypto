@@ -204,7 +204,7 @@ if typ==2:
         else:
             pass
             
-        if st.button(kryptotext+' data'):
+        if st.button('inspektera '+kryptotext+' data'):
             st.write('tidsram', tidsram)
             df=data.iloc[-tidsram:]
             st.write(df)
@@ -213,7 +213,7 @@ if typ==2:
         
         # st.write('tidsram =',tidsram,'dagar för grafen')
         lastdate=ETH.iloc[-1:].index
-        st.write('Senast käda datun', str(lastdate[0])[:10]+'. (Efter den röda prickade linjen följer en 5 dagars prognos)')
+        st.write('Senast kända datun', str(lastdate[0])[:10]+'. (Efter den röda prickade linjen följer en 5 dagars prognos)')
         
         ### plot Adj Close ###
         fig = plt.figure(figsize=(16,6))
