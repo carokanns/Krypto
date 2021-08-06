@@ -29,7 +29,7 @@ else:
     
 if typ==2:        
     kryptotext = st.sidebar.selectbox('vilken valuta',('ETH (Ethereum)','BTC (Bitcoin)',
-                                                    'BCH (Bitcoin Cach)','ZRX (0x)','XRP Ledger'),index=0)
+                                                    'BCH (Bitcoin Cach)','ZRX (0x)','XRP'),index=0)
     kryptotext = kryptotext[:3]
     if kryptotext=='ETH':
         valuta = 'ETH-USD'
@@ -74,7 +74,7 @@ if typ==2:
         st.info("""
                 Varje dags prognos görs individuellt utan påverkan på varandra.    
                 
-                Alternativ: Varje dags prognos bygger på föregåend dags prognos (stegvis beräknas prognos för dag 1 som används som input till dag 2 osv). Denna version kan överdriver ofta trenderna.    
+                Alternativ: Varje dags prognos bygger på föregåend dags prognos (stegvis beräknas prognos för dag 1 som används som input till dag 2 osv). Denna version har ibland en tendens att överdriva trenderna.    
                 """)
         
     def add_bollinger(df):    
@@ -303,7 +303,7 @@ else:
         df
     )   
     
-    df.rename(columns = {'BTC-USD':'Bitcoin','BCH-USD':'Bitcoin Cash','ETH-USD':'Ethereum','XRP-USD':'Ripple (XRP)','ZRX-USD':'0x (ZRX)','Adj Close':'OMX30'},inplace=True)
+    df.rename(columns = {'BTC-USD':'Bitcoin','BCH-USD':'Bitcoin Cash','ETH-USD':'Ethereum','XRP-USD':'XRP','ZRX-USD':'0x (ZRX)','Adj Close':'OMX30'},inplace=True)
     
     ax.legend(df.columns,handletextpad=1, fontsize = 20.0,loc='upper right')
     
