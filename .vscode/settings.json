@@ -1,6 +1,9 @@
 {
   "files.exclude": {
     "LICENSE": true,
-    "workspace.code-workspace": true
+    "workspace.code-workspace": true,
+    "setup.sh": true,
+    "requirements.txt": true,
+    "Procfile": true
   }
 }
