@@ -1,2 +1,3 @@
 catboost_info/*.*
+.vscode/*.*
 workspace.code-workspace
