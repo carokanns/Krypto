@@ -43,7 +43,6 @@ if typ==2:
         valuta = 'XRP-USD'  
         
         
-    #%%
     with load:
         # ETH = web.DataReader(valuta,'yahoo') # Etherium
         ETH = yf.download(valuta,progress=False)
@@ -68,6 +67,15 @@ if typ==2:
         tidsram = totlen-partlen
     else:
         pass
+
+    alternativ = st.sidebar.selectbox('Alternativ prognos',('Ja','Nej'),index=1)
+
+    with st.sidebar.beta_expander('Förklaring av alternativ prognos'):
+        st.info("""
+                Varje dags prognos görs individuellt utan påverkan på varandra.    
+                
+                Alternativ: Varje dags prognos bygger på föregåend dags prognos (stegvis beräknas prognos för dag 1 som används som input till dag 2 osv). Denna version kan överdriver ofta trenderna.    
+                """)
         
     def add_bollinger(df):    
         df['SMA'] = df['Adj Close'].rolling(window=20).mean()
@@ -135,7 +143,10 @@ if typ==2:
         predicted_Volume = (1+predicted_vol_y) * previous_Volume
         return predicted_AdjClose, predicted_Volume
             
-    def predict_n_days(df,model,vmodel):
+    def predict_alt_n_days(df,kryptotext):
+        vmodel = CatBoostRegressor().load_model(kryptotext+'_vmodel')
+        model  = CatBoostRegressor().load_model(kryptotext+'_model')
+        
         vkolumner, rkolumner = set_kolumner()
         
         for i in range(5):
@@ -156,15 +167,37 @@ if typ==2:
         
             
         return df    
+    
+    def predict_n_days(df,kryptotext):
+        
+        vkolumner, rkolumner = set_kolumner()
+        l=df.iloc[-1:].index
+        for i in range(5):
+            df = add_row(df.copy())
+            nyrad = df.iloc[-1:].index
+            vmodel = CatBoostRegressor().load_model(f'{kryptotext}{i+1}_vmodel')
+            model  = CatBoostRegressor().load_model(f'{kryptotext}{i+1}_model')
+            
+            vol_y = vmodel.predict(df.loc[l,vkolumner])[0]
+            ret_y = model.predict(df.loc[l,rkolumner])[0]
+            df.loc[nyrad,'vol_y'] = vol_y
+            df.loc[nyrad,'ret_y'] = ret_y
+            
+            predicted_AdjClose, predicted_Volume = transl_ret_y(ret_y, vol_y, df.iloc[-2]['Adj Close'],df.iloc[-2]['Volume'])
+            df.loc[nyrad,'Adj Close'] = predicted_AdjClose
+            df.loc[nyrad,'Volume'] = predicted_Volume
+            
+        return df    
+
 
     with graf:  
         # st.write(kryptotext)
-        vmodel = CatBoostRegressor().load_model(kryptotext+'_vmodel')
-        model  = CatBoostRegressor().load_model(kryptotext+'_model')
         data = define_new_columns(ETH.copy())  # remove unused columnes and add new columns
-        # print('before',df.columns)
-        # df = pred_grupp(df.copy(),model,vmodel,len(df),new_rows=True)
-        data = predict_n_days(data.copy(),model,vmodel)
+        
+        if alternativ=='Nej':
+            data = predict_n_days(data.copy(),kryptotext)
+        else:    
+            data = predict_alt_n_days(data.copy(),kryptotext)
         
         if bollinger=='Ja':
             data=add_bollinger(data)
@@ -180,18 +213,21 @@ if typ==2:
         
         # st.write('tidsram =',tidsram,'dagar för grafen')
         lastdate=ETH.iloc[-1:].index
-        st.write('Senast käda datun', str(lastdate[0])[:10]+'.  (Efter den röda prickade linjen följer en 5 dagars prognos)')
+        st.write('Senast käda datun', str(lastdate[0])[:10]+'. (Efter den röda prickade linjen följer en 5 dagars prognos)')
         
         ### plot Adj Close ###
         fig = plt.figure(figsize=(16,6))
         ax = fig.add_subplot(1,1,1)
         df=data.iloc[-tidsram:]
-        ax.set_title(kryptotext+' "Adjusted Close"')
+        if alternativ=='Ja':
+            ax.set_title(kryptotext+' "Adjusted Close" Alternativ prognos')
+        else:
+            ax.set_title(kryptotext+' "Adjusted Close"')            
         
         if bollinger=='Nej':
             ax.plot(
                 df.index,
-                df["Adj Close"],
+                df["Adj Close"],color='b',
             )   
             maxa = df['Adj Close'].max()
             mina = df['Adj Close'].min()
@@ -209,7 +245,7 @@ if typ==2:
         
             ax.plot(
                 df.index,
-                df[["Adj Close",'SMA','Upper','Lower']],
+                df[["Adj Close",'SMA','Upper','Lower']]
             )    
             ax.fill_between(df.index,df.Upper,df.Lower,color='grey',alpha=0.3)
             ax.legend(['Pris (Adj Close)','Simple Moving Avg','Övre','Undre'])
@@ -231,7 +267,7 @@ if typ==2:
         ax2.tick_params(axis='x',rotation=66)
         ax2.plot(
             df.index,
-            df['Volume']/1000000,
+            df['Volume']/1000000,color='g'
         )
         maxv = df['Volume'].max()/1000000
         minv = df['Volume'].min()/1000000
