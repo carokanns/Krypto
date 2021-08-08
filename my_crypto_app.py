@@ -141,7 +141,7 @@ if typ==2:
     def transl_ret_y(predicted_ret_y, predicted_vol_y, previous_AdjClose, previous_Volume):
         predicted_AdjClose = (1+predicted_ret_y) * previous_AdjClose
         predicted_Volume = (1+predicted_vol_y) * previous_Volume
-        return predicted_AdjClose, predicted_Volume
+        return predicted_AdjClose, predicted_Volume.astype('int64')
             
     def predict_alt_n_days(df,kryptotext):
         vmodel = CatBoostRegressor().load_model(kryptotext+'_vmodel')
@@ -158,14 +158,12 @@ if typ==2:
             df.loc[l,'vol_y'] = vol_y
             ret_y = model.predict(df.loc[l,rkolumner])[0]
             df.loc[l,'ret_y'] = ret_y
-            # print('vol_y',vol_y,'ret_y',ret_y,df.iloc[-1].ret_y)
-            # print('prev adjcl',df.iloc[-2]['Adj Close'])
+            
             predicted_AdjClose, predicted_Volume = transl_ret_y(ret_y, vol_y, df.iloc[-2]['Adj Close'],df.iloc[-2]['Volume'])
             df.loc[l,'Adj Close'] = predicted_AdjClose
             df.loc[l,'Volume'] = predicted_Volume
-            # print('pred AdjCl',predicted_AdjClose,df.loc[l,'Adj Close'])
         
-            
+        df.Volume = df.Volume.astype('int64')
         return df    
     
     def predict_n_days(df,kryptotext):
@@ -186,7 +184,8 @@ if typ==2:
             predicted_AdjClose, predicted_Volume = transl_ret_y(ret_y, vol_y, df.iloc[-2]['Adj Close'],df.iloc[-2]['Volume'])
             df.loc[nyrad,'Adj Close'] = predicted_AdjClose
             df.loc[nyrad,'Volume'] = predicted_Volume
-            
+         
+        df.Volume = df.Volume.astype('int64')   
         return df    
 
 
@@ -236,9 +235,6 @@ if typ==2:
                 df.index,
                 df[["Adj Close"]],
             )    
-            
-            ax.legend()
-
         else:
             maxa = df['Upper'].max()
             mina = df['Lower'].min()

@@ -1,7 +1,6 @@
 {
   "files.exclude": {
     "LICENSE": true,
-    "workspace.code-workspace": true,
     "setup.sh": true,
     "requirements.txt": true,
     "Procfile": true,
@@ -99,9 +98,6 @@
     "*requirements.*": true,
     "*setup": true,
     "*setup.*": true,
-    "*workspace": true,
-    "*workspace.*": true,
-    "*XRP1_model.*": true,
     "*XRP1_vmodel": true,
     "*XRP1_vmodel.*": true,
     "*XRP2_model": true,
