@@ -13,6 +13,20 @@ from catboost import CatBoostRegressor,Pool,utils
 # import time
 plt.style.use('fivethirtyeight')
 
+def _max_width_():
+    max_width_str = f"max-width: 2000px;"
+    st.markdown(
+        f"""
+    <style>
+    .reportview-container .main .block-container{{
+        {max_width_str}
+    }}
+    </style>    
+    """,
+        unsafe_allow_html=True,
+    )
+_max_width_()    
+
 def proc_change(df, ny, gammal, dagar):
     df[ny+'_'+str(dagar)] = df[gammal].pct_change(dagar)
 
@@ -190,7 +204,7 @@ if typ==2:
 
 
     with graf:  
-        # st.write(kryptotext)
+        
         data = define_new_columns(ETH.copy())  # remove unused columnes and add new columns
         
         if alternativ=='Nej':
