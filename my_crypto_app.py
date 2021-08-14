@@ -30,8 +30,8 @@ _max_width_()
 def proc_change(df, ny, gammal, dagar):
     df[ny+'_'+str(dagar)] = df[gammal].pct_change(dagar)
 
-load = st.beta_container()
-graf = st.beta_container()
+load = st.container()
+graf = st.container()
 global ETH
 valuta='ETH-USD'
 typ=1
@@ -64,8 +64,8 @@ if typ==2:
         # st.write('de 5 sista dagarna exrtrakt',ETH.iloc[-5:][['Adj Close', 'Volume',]])
             
     # st.write('lastETH',ETH.iloc[-1:].index[0])
-    tidsram='15 dagar'
-    tidsram=st.sidebar.selectbox('tidsram för graf',('15 dagar','30 dagar','90 dagar','från inköp'))
+    tidsram='30 dagar'
+    tidsram=st.sidebar.selectbox('tidsram för graf',('15 dagar','30 dagar','90 dagar','från inköp'),1)
     bollinger='Ja'
     bollinger=st.sidebar.selectbox('Bollinger-graf',('Ja','Nej'))
     if tidsram=='15 dagar':
@@ -84,7 +84,7 @@ if typ==2:
 
     alternativ = st.sidebar.selectbox('Alternativ prognos',('Ja','Nej'),index=1)
 
-    with st.sidebar.beta_expander('Förklaring av alternativ prognos'):
+    with st.sidebar.expander('Förklaring av alternativ prognos'):
         st.info("""
                 Varje dags prognos görs individuellt utan påverkan på varandra.    
                 
@@ -321,7 +321,7 @@ else:
     ax.tick_params(axis='x', rotation=66, labelsize=24.0)
     st.write(fig)
     
-    with st.beta_expander('Förklaring'):
+    with st.expander('Förklaring'):
         st.info("""Grafen visar utveckling av mina kryptovalutor och OMX30 relativt varandra   
              OMX30 är ett snitt av Stockholmsbörsens 30 mest omsatta aktier.   
              Allt startar från min inköpsdatum av kryptovalutor """ + oldestdate +      
