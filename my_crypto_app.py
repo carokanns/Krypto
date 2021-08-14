@@ -30,8 +30,8 @@ _max_width_()
 def proc_change(df, ny, gammal, dagar):
     df[ny+'_'+str(dagar)] = df[gammal].pct_change(dagar)
 
-load = st.beta_container()
-graf = st.beta_container()
+load = st.container()
+graf = st.container()
 global ETH
 valuta='ETH-USD'
 typ=1
