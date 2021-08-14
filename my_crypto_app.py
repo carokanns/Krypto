@@ -1,3 +1,5 @@
+# Använd 'krypto_skapa_modell för att uppdater modellerna till senaste datum
+
 import numpy as np
 import pandas as pd
 # from datetime import datetime as dt

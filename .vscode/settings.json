@@ -84,8 +84,6 @@
     "*ETH_model.*": true,
     "*ETH_vmodel": true,
     "*ETH_vmodel.*": true,
-    "*krypto_skapa_modell": true,
-    "*krypto_skapa_modell.*": true,
     "*LICENSE": true,
     "*LICENSE.*": true,
     "*Procfile.*": true,
