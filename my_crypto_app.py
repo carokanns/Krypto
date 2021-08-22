@@ -232,13 +232,6 @@ if typ==2:    # prognos per valuta
         else:
             pass
             
-        if st.button('inspektera '+kryptotext+' data'):
-            st.write('tidsram', tidsram)
-            df=data.iloc[-tidsram:]
-            st.write(df)
-        else:
-            pass    
-        
         # st.write('tidsram =',tidsram,'dagar för grafen')
         lastdate=valuta.iloc[-1:].index
         st.write('Senast kända datun', str(lastdate[0])[:10]+'. (Efter den röda prickade linjen följer en 5 dagars prognos)')
@@ -299,6 +292,14 @@ if typ==2:    # prognos per valuta
         ax2.vlines(lastdate,minv,maxv,colors='r', linestyles='dotted')
         
         st.write(fig2)
+        
+        if st.button('inspektera '+kryptotext+' data'):
+            st.write('tidsram', tidsram)
+            df=data.iloc[-tidsram:]
+            st.write(df)
+        else:
+            pass    
+        
 elif typ==1:   # Jämför med OMX
     tickers = ['BTC-USD','BCH-USD','ETH-USD','XRP-USD','ZRX-USD']
     
