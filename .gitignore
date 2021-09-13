@@ -2,3 +2,5 @@ catboost_info/*.*
 catbost_info
 .vscode/*.*
 workspace.code-workspace
+catboost_info/tmp/desktop.ini
+catboost_info/learn/desktop.ini
