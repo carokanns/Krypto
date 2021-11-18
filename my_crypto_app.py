@@ -234,7 +234,7 @@ if typ==2:    # prognos per valuta
             
         # st.write('tidsram =',tidsram,'dagar för grafen')
         lastdate=valuta.iloc[-1:].index
-        st.write('Senast kända datun', str(lastdate[0])[:10]+'. (Efter den röda prickade linjen följer en 5 dagars prognos)')
+        st.write('Senast kända datum', str(lastdate[0])[:10]+'. (Efter den röda prickade linjen följer en 5 dagars prognos)')
         
         ### plot Adj Close ###
         fig = plt.figure(figsize=(16,6))
