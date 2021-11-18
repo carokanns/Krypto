@@ -18,6 +18,7 @@ client = Client(api_key, api_secret)
 
 # %%
 symbols = pd.read_sql('SELECT name FROM sqlite_master WHERE type="table"', engine).name.tolist()
+
 def qry(symbol, lookback:int):
     now = dt.datetime.now() - dt.timedelta(hours=1)	# binance time
     before = now - dt.timedelta(minutes=lookback)
@@ -36,7 +37,7 @@ for symbol in symbols:
 # %%
 if len(rets)>0:
     top_coin = symbols[rets.index(max(rets))]
-    print(top_coin, max(rets))
+    print(top_coin)
 else:
     top_coin=None
     print('No coins to buy')
@@ -61,7 +62,7 @@ def get_my_balance():
 def create_buy_order(symbol, quantity,price):
     global MY_BALANCE
     if False: 
-        order = client.order_market_buy(symbol=symbol, side='BUY',type='MARKET', quantity=quantity)
+        order = client.create_order(symbol=symbol, side='BUY',type='MARKET', quantity=quantity)
     
     # temporary until we go sharp
     priset=quantity*price
@@ -73,7 +74,7 @@ def create_buy_order(symbol, quantity,price):
 # %%
 
 info=client.get_symbol_info(symbol=top_coin)
-LotSize = float([i for i in info['filters'] if i['filterType']=='LOT_SIZE'][0]['stepSize'])
+LotSize = float([i for i in info['filters'] if i['filterType']=='LOT_SIZE'][0]['minQty'])
 price = float(client.get_symbol_ticker(symbol=top_coin)['price'])
 decimals = len(str(LotSize).split('.')[1])
 buy_quantity = round(investment_amount/price,decimals)
@@ -114,7 +115,8 @@ def create_sell_order(symbol, quantity,price):
 async def main(coin):
     # client = await AsyncClient.create()
     # print('start main')
-    # set start time
+    min_percent = 0.995
+    max_percent = 1.005
     start_time = dt.datetime.now()
     bm = BinanceSocketManager(client)
     ts = bm.trade_socket(coin)
@@ -128,15 +130,16 @@ async def main(coin):
                 frame = createframe(res)
                 if elapsed_time.seconds > 300: # 5 minutes
                     start_time = dt.datetime.now()
-                    print(frame.Price[0],'min:',round(buyprice*0.97,3), 'max:', round(buyprice*1.03,3))
-                if frame.Price[0] < buyprice*0.97 or frame.Price[0] > buyprice*1.03:
+                    print(frame.Price[0],'min:',round(buyprice*min_percent,3), 'max:', round(buyprice*max_percent,3))
+                if frame.Price[0] < buyprice*min_percent or frame.Price[0] > buyprice*max_percent:
                     order = create_sell_order(coin, buy_quantity,frame.Price[0])
-                    print(f'Sålde {buy_quantity} {top_coin} för {frame.Price[0]}. Totalt: {buy_quantity*frame.Price[0]}' )
+                    print(f'Sålde {buy_quantity} {top_coin} för {frame.Price[0]} Totalt: {buy_quantity*frame.Price[0]}' )
                     print('\n',order)
                     # loop.stop()
                     break
     
     # await client.close_connection()
+    
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main(top_coin))
