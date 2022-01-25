@@ -246,11 +246,17 @@ def plot_ichimoku(df, title):
     fig.add_trace(span_b)
 
     # set title
-    my_title = f'{title} - (<i>zoom in/out i grafen under</i>)'
+    my_title = f'{title}<br><sup><i>zoom in/out i grafen under</i></sup>'
     
     fig.update_layout(title=my_title)
     
-    fig.update_layout(height=800, width=1300, showlegend=True , paper_bgcolor='rgba(255,255,255,0)', plot_bgcolor='rgba(255,255,255,0.8)')
+    fig.update_layout(height=800, width=1300, showlegend=True , 
+                    #   title=go.layout.Title(
+                    #       text="Plot Title <br><sup>Plot Subtitle</sup>",
+                    #       xref="paper",
+                    #       x=0
+                    #   ),
+                      paper_bgcolor='rgba(255,255,255,0)', plot_bgcolor='rgba(255,255,255,0.8)')
 
     st.write(fig)
 
