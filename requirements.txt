@@ -1,8 +1,8 @@
-numpy==1.19.2 
-pandas==1.1.3 
-pandas-datareader==0.9.0 
+numpy
+pandas
+pandas-datareader
 matplotlib
 plotly
-streamlit==0.86.0
-catboost==0.25.1
-yfinance==0.1.63  
+streamlit
+catboost
+yfinance
