@@ -85,7 +85,7 @@ def add_row(df):
     new_data['month']=None
     new_data['wday']= None # pd.DatetimeIndex(new_date).weekday
     new_data['day']=  None # pd.DatetimeIndex(new_date).day
-    df = df.append(new_data)
+    df = pd.concat([df,new_data])
     
     df = define_prognos_columns(df)
     return df
