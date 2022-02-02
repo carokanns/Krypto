@@ -391,7 +391,7 @@ if typ==2:    # graf per valuta
                 st.write(fig2)
             else:
                 # Enkel graf med prognos
-                df = data.iloc[-tidsram:].dropna()
+                df = data.iloc[-tidsram:]
                 maxa = df['Adj Close'].max()
                 mina = df['Adj Close'].min()
 
