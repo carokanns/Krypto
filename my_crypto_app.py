@@ -1,6 +1,6 @@
 # Använd 'krypto_skapa_modell för att uppdater modellerna till senaste datum
 
-from plotly.subplots import make_subplots
+# from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
 # import cufflinks as cf
