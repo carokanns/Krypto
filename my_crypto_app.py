@@ -19,7 +19,6 @@ from catboost import CatBoostRegressor, Pool, utils
 # import time
 plt.style.use('fivethirtyeight')
 
-
 st.set_page_config(
     page_title="JP Crypto Currencies",
     page_icon="🧊",
