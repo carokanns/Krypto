@@ -7,3 +7,7 @@ catboost_info/learn/desktop.ini
 desktop.ini
 catboost_info/test/desktop.ini
 freeze.txt
+*.*_model
+*.*_model.*
+*.*_vmodel
+*.*_vmodel.*
