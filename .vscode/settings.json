@@ -139,5 +139,6 @@
     "*ZRX_vmodel.*": true,
     ".vscode": true,
     "XRP1_model": true
-  }
+  },
+  "editor.acceptSuggestionOnEnter": "on"
 }
