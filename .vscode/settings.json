@@ -129,5 +129,6 @@
     "BCH5_model": true,
     "BCH5_vmodel": true
   },
-  "editor.acceptSuggestionOnEnter": "on"
+  "editor.acceptSuggestionOnEnter": "on",
+  "ipynb.experimental.pasteImages.enabled": false
 }
