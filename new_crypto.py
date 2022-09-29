@@ -9,7 +9,6 @@ import pickle
 from datetime import timedelta
 import yfinance as yf
 from matplotlib import pyplot as plt
-from pytrends.request import TrendReq
 
 tickers = ['BTC-USD', 'ETH-USD', 'BCH-USD', 'ZRX-USD', 'XRP-USD']
 ticker_names = ['Bitcoin', 'Ethereum', 'Bitcoin Cash', '0X', 'Ripple']
